@@ -1,5 +1,4 @@
 function pegarClima() {
-  const apiKey = "8db7d33e328fed86e6cd2327112f1365";
   const cidade = document.getElementById("cidade").value;
 
   if (!cidade) {
@@ -7,8 +6,12 @@ function pegarClima() {
     return;
   }
 
-  const climaAtualUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cidade}&appid=${apiKey}&units=metric&lang=pt_br`;
-  const previsaoHorarioUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cidade}&appid=${apiKey}&units=metric&lang=pt_br`;
+  const climaAtualUrl = `http://localhost:3000/clima?cidade=${encodeURIComponent(
+    cidade
+  )}`;
+  const previsaoHorarioUrl = `http://localhost:3000/previsao?cidade=${encodeURIComponent(
+    cidade
+  )}`;
 
   // Clima atual
   fetch(climaAtualUrl)
