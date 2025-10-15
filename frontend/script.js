@@ -1,6 +1,6 @@
 const backendUrl = "https://clima-backend-gpfl.onrender.com";
 
-// buscar clima e previsão
+// Buscar clima e previsão
 async function pegarClima() {
   const cidade = document.getElementById("cidade").value.trim();
 
@@ -10,24 +10,27 @@ async function pegarClima() {
   }
 
   try {
-    // Requisição do clima atual
+    // Buscar clima atual
     const respostaClima = await fetch(`${backendUrl}/clima?cidade=${encodeURIComponent(cidade)}`);
+    if (!respostaClima.ok) throw new Error("Erro ao buscar clima atual");
     const dadosClima = await respostaClima.json();
 
     displayClimaAtual(dadosClima);
 
-    // Requisição da previsão
+    // Buscar previsão
     const respostaPrevisao = await fetch(`${backendUrl}/previsao?cidade=${encodeURIComponent(cidade)}`);
+    if (!respostaPrevisao.ok) throw new Error("Erro ao buscar previsão");
     const dadosPrevisao = await respostaPrevisao.json();
 
     displayPrevisao(dadosPrevisao);
+
   } catch (erro) {
     console.error("Erro ao buscar dados:", erro);
     alert("Erro ao buscar informações do clima. Tente novamente mais tarde.");
   }
 }
 
-// Exibe o clima atual
+// Mostra o clima atual
 function displayClimaAtual(data) {
   const temperatura = document.getElementById("temperatura");
   const climaInfo = document.getElementById("climaInfo");
@@ -37,27 +40,33 @@ function displayClimaAtual(data) {
   climaInfo.innerHTML = "";
   climaIcon.src = "";
 
-  if (data.cod === "404") {
-    climaInfo.innerHTML = `<p>${data.message}</p>`;
-  } else {
-    const cidadeNome = data.name;
-    const temp = Math.round(data.main.temp);
-    const descricao = data.weather[0].description;
-    const iconCode = data.weather[0].icon;
-    const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@4x.png`;
-
-    temperatura.innerHTML = `<p>${temp}°C</p>`;
-    climaInfo.innerHTML = `<p>${cidadeNome}</p><p>${descricao}</p>`;
-    climaIcon.src = iconUrl;
-    climaIcon.alt = descricao;
-    climaIcon.style.display = "block";
+  if (!data || data.cod === "404") {
+    climaInfo.innerHTML = `<p>${data?.message || "Cidade não encontrada."}</p>`;
+    return;
   }
+
+  const cidadeNome = data.name;
+  const temp = Math.round(data.main.temp);
+  const descricao = data.weather[0].description;
+  const iconCode = data.weather[0].icon;
+  const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@4x.png`;
+
+  temperatura.innerHTML = `<p>${temp}°C</p>`;
+  climaInfo.innerHTML = `<p>${cidadeNome}</p><p>${descricao}</p>`;
+  climaIcon.src = iconUrl;
+  climaIcon.alt = descricao;
+  climaIcon.style.display = "block";
 }
 
-// Exibe a previsão por horário (próximas 24h)
+// Mostra a previsão por horário das próximas 24h
 function displayPrevisao(hourlyData) {
   const previsaoHorario = document.getElementById("previsaoHorario");
   previsaoHorario.innerHTML = "";
+
+  if (!hourlyData || !hourlyData.list) {
+    previsaoHorario.innerHTML = "<p>Não foi possível carregar a previsão.</p>";
+    return;
+  }
 
   const proximas24h = hourlyData.list.slice(0, 8);
 
