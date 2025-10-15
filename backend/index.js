@@ -6,11 +6,20 @@ import dotenv from "dotenv";
 dotenv.config();
 const app = express();
 
-app.use(cors());
-
+const PORT = process.env.PORT || 3000;
 const API_KEY = process.env.API_KEY;
 
-// Endpoint de clima atual
+app.use(
+  cors({
+    origin: [
+      "https://clima-pg8ug0jmo-pedro-ferreiras-projects-89fb485f.vercel.app",
+      "http://localhost:3000",
+      "http://127.0.0.1:5500" 
+    ],
+    methods: ["GET"],
+  })
+);
+
 app.get("/clima", async (req, res) => {
   const cidade = req.query.cidade;
   if (!cidade)
@@ -29,7 +38,6 @@ app.get("/clima", async (req, res) => {
   }
 });
 
-// Endpoint de previsão
 app.get("/previsao", async (req, res) => {
   const cidade = req.query.cidade;
   if (!cidade)
@@ -48,4 +56,6 @@ app.get("/previsao", async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log("Servidor rodando na porta 3000"));
+app.listen(PORT, () =>
+  console.log(`Servidor rodando na porta ${PORT}`)
+);
