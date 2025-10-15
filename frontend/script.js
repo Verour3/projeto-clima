@@ -1,28 +1,33 @@
 const backendUrl = "https://clima-backend-gpfl.onrender.com";
 
+// buscar clima e previsão
 async function pegarClima() {
-  const cidade = document.getElementById("cidade").value;
-  const resposta = await fetch(`${backendUrl}/clima?cidade=${cidade}`);
-  const dados = await resposta.json();
-  console.log(dados);
-}
+  const cidade = document.getElementById("cidade").value.trim();
 
   if (!cidade) {
     alert("Por favor, insira o nome da cidade.");
     return;
   }
 
-  fetch(`${backendUrl}/clima?cidade=${encodeURIComponent(cidade)}`)
-    .then((res) => res.json())
-    .then((data) => displayClimaAtual(data))
-    .catch(() => alert("Erro ao buscar clima atual."));
+  try {
+    // Requisição do clima atual
+    const respostaClima = await fetch(`${backendUrl}/clima?cidade=${encodeURIComponent(cidade)}`);
+    const dadosClima = await respostaClima.json();
 
-  fetch(`${backendUrl}/previsao?cidade=${encodeURIComponent(cidade)}`)
-    .then((res) => res.json())
-    .then((data) => displayPrevisao(data))
-    .catch(() => alert("Erro ao buscar previsão."));
+    displayClimaAtual(dadosClima);
+
+    // Requisição da previsão
+    const respostaPrevisao = await fetch(`${backendUrl}/previsao?cidade=${encodeURIComponent(cidade)}`);
+    const dadosPrevisao = await respostaPrevisao.json();
+
+    displayPrevisao(dadosPrevisao);
+  } catch (erro) {
+    console.error("Erro ao buscar dados:", erro);
+    alert("Erro ao buscar informações do clima. Tente novamente mais tarde.");
+  }
 }
 
+// Exibe o clima atual
 function displayClimaAtual(data) {
   const temperatura = document.getElementById("temperatura");
   const climaInfo = document.getElementById("climaInfo");
@@ -49,6 +54,7 @@ function displayClimaAtual(data) {
   }
 }
 
+// Exibe a previsão por horário (próximas 24h)
 function displayPrevisao(hourlyData) {
   const previsaoHorario = document.getElementById("previsaoHorario");
   previsaoHorario.innerHTML = "";
@@ -57,7 +63,7 @@ function displayPrevisao(hourlyData) {
 
   proximas24h.forEach((item) => {
     const dataHora = new Date(item.dt * 1000);
-    const hora = dataHora.getHours();
+    const hora = dataHora.getHours().toString().padStart(2, "0");
     const temp = Math.round(item.main.temp);
     const iconCode = item.weather[0].icon;
     const iconUrl = `https://openweathermap.org/img/wn/${iconCode}.png`;
