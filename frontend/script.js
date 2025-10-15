@@ -1,3 +1,5 @@
+const backendUrl = "http://localhost:3000";
+
 function pegarClima() {
   const cidade = document.getElementById("cidade").value;
 
@@ -6,35 +8,15 @@ function pegarClima() {
     return;
   }
 
-  const climaAtualUrl = `http://localhost:3000/clima?cidade=${encodeURIComponent(
-    cidade
-  )}`;
-  const previsaoHorarioUrl = `http://localhost:3000/previsao?cidade=${encodeURIComponent(
-    cidade
-  )}`;
+  fetch(`${backendUrl}/clima?cidade=${encodeURIComponent(cidade)}`)
+    .then((res) => res.json())
+    .then((data) => displayClimaAtual(data))
+    .catch(() => alert("Erro ao buscar clima atual."));
 
-  // Clima atual
-  fetch(climaAtualUrl)
-    .then((response) => response.json())
-    .then((data) => {
-      displayClimaAtual(data);
-    })
-    .catch((error) => {
-      console.error("Erro ao buscar dados do clima atual:", error);
-      alert("Erro ao buscar dados do clima atual. Por favor, tente novamente.");
-    });
-
-  fetch(previsaoHorarioUrl)
-    .then((response) => response.json())
-    .then((data) => {
-      displayPrevisao(data);
-    })
-    .catch((error) => {
-      console.error("Erro ao buscar dados da previsão do tempo:", error);
-      alert(
-        "Erro ao buscar dados da previsão do tempo. Por favor, tente novamente."
-      );
-    });
+  fetch(`${backendUrl}/previsao?cidade=${encodeURIComponent(cidade)}`)
+    .then((res) => res.json())
+    .then((data) => displayPrevisao(data))
+    .catch(() => alert("Erro ao buscar previsão."));
 }
 
 function displayClimaAtual(data) {
@@ -42,7 +24,6 @@ function displayClimaAtual(data) {
   const climaInfo = document.getElementById("climaInfo");
   const climaIcon = document.getElementById("climaIcon");
 
-  // Limpar previsões anteriores
   temperatura.innerHTML = "";
   climaInfo.innerHTML = "";
   climaIcon.src = "";
@@ -51,7 +32,7 @@ function displayClimaAtual(data) {
     climaInfo.innerHTML = `<p>${data.message}</p>`;
   } else {
     const cidadeNome = data.name;
-    const temp = Math.round(data.main.temp); // Celsius já está pronto
+    const temp = Math.round(data.main.temp);
     const descricao = data.weather[0].description;
     const iconCode = data.weather[0].icon;
     const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@4x.png`;
@@ -68,7 +49,7 @@ function displayPrevisao(hourlyData) {
   const previsaoHorario = document.getElementById("previsaoHorario");
   previsaoHorario.innerHTML = "";
 
-  const proximas24h = hourlyData.list.slice(0, 8); // 3h por previsão = 8 previsões para 24h
+  const proximas24h = hourlyData.list.slice(0, 8);
 
   proximas24h.forEach((item) => {
     const dataHora = new Date(item.dt * 1000);
