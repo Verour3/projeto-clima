@@ -1,7 +1,11 @@
-const backendUrl = "http://localhost:3000";
+const backendUrl = "https://clima-backend-gpfl.onrender.com";
 
-function pegarClima() {
+async function pegarClima() {
   const cidade = document.getElementById("cidade").value;
+  const resposta = await fetch(`${backendUrl}/clima?cidade=${cidade}`);
+  const dados = await resposta.json();
+  console.log(dados);
+}
 
   if (!cidade) {
     alert("Por favor, insira o nome da cidade.");
