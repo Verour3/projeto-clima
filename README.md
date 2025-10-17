@@ -1,8 +1,8 @@
-# 🌤️ Any Weather
+# 🌤️ AnyWeather
 Any Weather é um site simples e interativo para verificar a previsão do tempo em qualquer cidade do mundo.
 
 ## 🔗 Demonstração
-🔹 [Acesse o Any Weather!](https://clima-pf.vercel.app/)
+🔹 [Acesse o AnyWeather!](https://clima-pf.vercel.app/)
 
 ## 🛠️ Tecnologias utilizadas
 
