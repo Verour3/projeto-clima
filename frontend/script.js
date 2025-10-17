@@ -104,11 +104,16 @@ function atualizarFundo(descricao) {
   } else if (
     descricao.includes("nuvem") ||
     descricao.includes("algumas nuvens") ||
-    descricao.includes("nublado") ||
-    descricao.includes("nuvens dispersas")
+    descricao.includes("nublado")
   ) {
     imagemFundo =
       "url('https://d2j02ha532z66v.cloudfront.net/wp-content/uploads/2023/01/clouds.jpg')";
+  } else if (descricao.includes("nuvens dispersas")) {
+    imagemFundo =
+      "url('https://static.vecteezy.com/ti/fotos-gratis/p1/15126735-nuvens-dispersas-no-ceu-indicando-uma-mudanca-no-tempo-gratis-foto.jpg')";
+  } else if (descricao.includes("névoa")) {
+    imagemFundo =
+      "url('https://www.viewbug.com/media/mediafiles/2018/01/15/77016716_large1300.jpg')";
   } else if (
     descricao.includes("sol") ||
     descricao.includes("céu limpo") ||
