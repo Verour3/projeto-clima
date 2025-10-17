@@ -1,6 +1,13 @@
+:root {
+  --main-font: "Ubuntu", sans-serif;
+  --blue: #6c87ff;
+  --light-blue: #cbd4ff;
+  --white: #fff;
+}
+
 body {
-  background: #6c87ff;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--blue);
+  font-family: var(--main-font);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -22,7 +29,7 @@ body {
 h2,
 label,
 p {
-  color: #fff;
+  color: var(--white);
   margin: 8px 0;
 }
 
@@ -31,13 +38,13 @@ input {
   padding: 8px;
   box-sizing: border-box;
   border-radius: 10px;
-  border: 1px solid white;
+  border: 1px solid var(--white);
   margin-top: 20px;
 }
 
 button {
-  background: #c1ccff;
-  color: white;
+  background: var(--light-blue);
+  color: var(--white);
   padding: 10px;
   border: none;
   border-radius: 10px;
@@ -46,10 +53,11 @@ button {
   width: 100px;
   font-size: 15px;
   transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.034);
 }
 
 button:hover {
-  background: #7991ff;
+  background: var(--blue);
 }
 
 #temperatura p {
@@ -84,7 +92,8 @@ button:hover {
   flex-direction: column;
   align-items: center;
   margin-right: 10px;
-  color: white;
+  margin-bottom: 25px;
+  color: var(--white);
 }
 
 .horario-item img {
@@ -94,6 +103,79 @@ button:hover {
 }
 
 #horario-heading {
-  color: #fff;
+  color: var(--white);
   margin-top: 10px;
+}
+
+#background-gif {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 0.5s ease-in-out;
+  opacity: 0.4;
+  filter: blur(8px);
+}
+
+@media (max-width: 600px) {
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  #clima-container {
+    width: 100%;
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  #climaIcon {
+    width: 150px;
+    height: 150px;
+  }
+
+  #temperatura p {
+    font-size: 40px;
+  }
+
+  #climaInfo {
+    font-size: 16px;
+  }
+
+  input {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  button {
+    width: 80%;
+    font-size: 16px;
+  }
+
+  #previsaoHorario {
+    margin-top: 30px;
+  }
+
+  .horario-item {
+    width: 60px;
+    font-size: 12px;
+  }
+
+  .horario-item img {
+    width: 24px;
+    height: 24px;
+  }
 }

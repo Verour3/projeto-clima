@@ -11,19 +11,22 @@ async function pegarClima() {
 
   try {
     // Buscar clima atual
-    const respostaClima = await fetch(`${backendUrl}/clima?cidade=${encodeURIComponent(cidade)}`);
+    const respostaClima = await fetch(
+      `${backendUrl}/clima?cidade=${encodeURIComponent(cidade)}`
+    );
     if (!respostaClima.ok) throw new Error("Erro ao buscar clima atual");
     const dadosClima = await respostaClima.json();
 
     displayClimaAtual(dadosClima);
 
     // Buscar previsão
-    const respostaPrevisao = await fetch(`${backendUrl}/previsao?cidade=${encodeURIComponent(cidade)}`);
+    const respostaPrevisao = await fetch(
+      `${backendUrl}/previsao?cidade=${encodeURIComponent(cidade)}`
+    );
     if (!respostaPrevisao.ok) throw new Error("Erro ao buscar previsão");
     const dadosPrevisao = await respostaPrevisao.json();
 
     displayPrevisao(dadosPrevisao);
-
   } catch (erro) {
     console.error("Erro ao buscar dados:", erro);
     alert("Erro ao buscar informações do clima. Tente novamente mais tarde.");
@@ -56,6 +59,7 @@ function displayClimaAtual(data) {
   climaIcon.src = iconUrl;
   climaIcon.alt = descricao;
   climaIcon.style.display = "block";
+  atualizarFundo(descricao);
 }
 
 // Mostra a previsão por horário das próximas 24h
@@ -86,4 +90,38 @@ function displayPrevisao(hourlyData) {
     `;
     previsaoHorario.innerHTML += horarioItemHtml;
   });
+}
+
+function atualizarFundo(descricao) {
+  const fundo = document.getElementById("background-gif");
+  let imagemFundo = "";
+
+  descricao = descricao.toLowerCase();
+
+  if (descricao.includes("chuva") || descricao.includes("chuvoso")) {
+    imagemFundo =
+      "url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZDN4M2EyOWk1MGd2MmF0eDk4aWh2anNxM250dGJsY3p5MHE1cHk4MyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/t7Qb8655Z1VfBGr5XB/giphy.gif')";
+  } else if (
+    descricao.includes("nuvem") ||
+    descricao.includes("algumas nuvens") ||
+    descricao.includes("nublado") ||
+    descricao.includes("nuvens dispersas")
+  ) {
+    imagemFundo =
+      "url('https://d2j02ha532z66v.cloudfront.net/wp-content/uploads/2023/01/clouds.jpg')";
+  } else if (
+    descricao.includes("sol") ||
+    descricao.includes("céu limpo") ||
+    descricao.includes("ensolarado")
+  ) {
+    imagemFundo =
+      "url('https://upload.wikimedia.org/wikipedia/commons/2/26/Sunny_day_in_India.jpg')";
+  } else if (descricao.includes("neve")) {
+    imagemFundo =
+      "url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMTM2YXhyNnhrNmY3MDh1ZjJocXMzamlvNndnaXd4a3BxeGYyd2piZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/xTcnThWTvBZGrgx2dW/giphy.gif')";
+  } else {
+    imagemFundo = "";
+  }
+
+  fundo.style.backgroundImage = imagemFundo;
 }
