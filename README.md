@@ -1,3 +1,6 @@
+![Demonstração do site](demo.gif)
+
+
 # 🌤️ AnyWeather
 Any Weather é um site simples e interativo para verificar a previsão do tempo em qualquer cidade do mundo.
 
