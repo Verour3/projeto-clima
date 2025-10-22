@@ -23,7 +23,11 @@ body {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.titulo {
   text-align: center;
+  margin-bottom: 20px;
 }
 
 h2,
@@ -63,10 +67,17 @@ button:hover {
 #temperatura p {
   font-size: 60px;
   margin-top: -30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #climaInfo {
   font-size: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #climaIcon {
@@ -122,6 +133,27 @@ button:hover {
   filter: blur(8px);
 }
 
+.pesquisa-container {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+#loading {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+#loading img {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 5px;
+}
+
 @media (max-width: 600px) {
   body {
     min-height: 100vh;
@@ -153,6 +185,9 @@ button:hover {
 
   #climaInfo {
     font-size: 16px;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
   }
 
   input {

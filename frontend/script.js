@@ -1,8 +1,10 @@
 const backendUrl = "https://clima-backend-gpfl.onrender.com";
 
-// Buscar clima e previsão
 async function pegarClima() {
-  const cidade = document.getElementById("cidade").value.trim();
+  const cidadeInput = document.getElementById("cidade");
+  const cidade = cidadeInput.value.trim();
+  const loading = document.getElementById("loading");
+  const pesquisaContainer = document.querySelector(".pesquisa-container");
 
   if (!cidade) {
     alert("Por favor, insira o nome da cidade.");
@@ -10,7 +12,9 @@ async function pegarClima() {
   }
 
   try {
-    // Buscar clima atual
+    pesquisaContainer.style.display = "none";
+    loading.style.display = "flex";
+
     const respostaClima = await fetch(
       `${backendUrl}/clima?cidade=${encodeURIComponent(cidade)}`
     );
@@ -19,7 +23,6 @@ async function pegarClima() {
 
     displayClimaAtual(dadosClima);
 
-    // Buscar previsão
     const respostaPrevisao = await fetch(
       `${backendUrl}/previsao?cidade=${encodeURIComponent(cidade)}`
     );
@@ -30,10 +33,12 @@ async function pegarClima() {
   } catch (erro) {
     console.error("Erro ao buscar dados:", erro);
     alert("Erro ao buscar informações do clima. Tente novamente mais tarde.");
+  } finally {
+    loading.style.display = "none";
+    pesquisaContainer.style.display = "flex";
   }
 }
 
-// Mostra o clima atual
 function displayClimaAtual(data) {
   const temperatura = document.getElementById("temperatura");
   const climaInfo = document.getElementById("climaInfo");
@@ -62,7 +67,6 @@ function displayClimaAtual(data) {
   atualizarFundo(descricao);
 }
 
-// Mostra a previsão por horário das próximas 24h
 function displayPrevisao(hourlyData) {
   const previsaoHorario = document.getElementById("previsaoHorario");
   previsaoHorario.innerHTML = "";

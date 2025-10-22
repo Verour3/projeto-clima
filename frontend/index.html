@@ -13,15 +13,20 @@
       rel="stylesheet"
     />
   </head>
+
   <body>
     <div id="clima-container">
-      <h2>AnyWeather</h2>
-      <input
-        type="text"
-        id="cidade"
-        placeholder="Saiba o clima de qualquer lugar!"
-      />
-      <button onclick="pegarClima()">Pesquisar</button>
+      <h2 class="titulo">AnyWeather</h2>
+
+      <div id="loading">
+        <img src="img/loading.gif" alt="Carregando..." />
+        <p>Carregando dados do clima...</p>
+      </div>
+
+      <div class="pesquisa-container">
+        <input type="text" id="cidade" placeholder="Qual local veremos hoje?" />
+        <button onclick="pegarClima()">Pesquisar</button>
+      </div>
 
       <img id="climaIcon" alt="Ícone do Clima" />
 
@@ -31,7 +36,9 @@
 
       <div id="previsaoHorario"></div>
     </div>
+
+    <div id="background-gif"></div>
+
     <script src="./script.js"></script>
   </body>
-  <div id="background-gif"></div>
 </html>
